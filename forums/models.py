@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.utils.text import slugify
+from django.urls import reverse
 
 class Forum(models.Model):
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -12,6 +13,9 @@ class Forum(models.Model):
 	def save(self, *args, **kwargs):
 		self.slug = slugify(self.title)
 		super(Forum, self).save(*args, **kwargs)
+	
+	def get_absolute_url(self):
+		return reverse('home')
 
 class Comment(models.Model):
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
