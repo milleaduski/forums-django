@@ -3,6 +3,8 @@ from django.conf import settings
 from django.utils.text import slugify
 from django.urls import reverse
 
+import time
+
 class Forum(models.Model):
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 	title = models.CharField(max_length=100)
@@ -11,11 +13,14 @@ class Forum(models.Model):
 	created_at = models.DateTimeField(auto_now_add=True)
 
 	def save(self, *args, **kwargs):
-		self.slug = slugify(self.title)
+		self.slug = slugify(self.title) + '-' + time.strftime("%Y%m%d%H%M%S")
 		super(Forum, self).save(*args, **kwargs)
 	
 	def get_absolute_url(self):
 		return reverse('home')
+
+	def __str__(self):
+		return self.title
 
 class Comment(models.Model):
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
