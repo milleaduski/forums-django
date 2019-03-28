@@ -1,13 +1,15 @@
 {% extends "base.html" %}
 
+{% load humanize %}
+
 {% block title %} List Forum{% endblock %}
 
 {% block content %}
 <div class="jumbotron">
   <h1>Forums</h1> 
  	<ul>
- 		{% for forum in objForums %}
- 			<li>{{forum.title}} | <b>{{forum.user}}</b> | <span style="font-size: 12px;"><i>{{forum.created_at}}</i></span></li><br>
+ 		{% for forum in object_list %}
+ 			<li>{{forum.title}} | <a href="{% url 'forum-by' forum.user %}">{{forum.user}}</a> | <span style="font-size: 12px;"><i>{{forum.created_at | naturaltime}}</i></span></li><br>
  		{% endfor %}
  	</ul>
 </div>
