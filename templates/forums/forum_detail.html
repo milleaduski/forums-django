@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+
+{% block title %} {{object.title}} {% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+  <h1>{{object.title}}</h1> 
+  <p style="font-size: 20px;">{{ object.desc }}</p>
+  - <span><i>{{object.created_at | naturaltime}}</i></span>
+  <p>{{additional}}</p>
+</div>
+{% endblock%}
