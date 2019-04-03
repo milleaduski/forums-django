@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import CreateView, ListView, DetailView
+from django.views.generic import CreateView, ListView, DetailView, UpdateView
 from .models import Forum
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -22,8 +22,15 @@ class ForumDetailView(DetailView):
 	model = Forum
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['additional'] = 'this is the value of the additional variable too'
+		context['additional'] = ''
 		return context
+
+class ForumUpdateView(UpdateView):
+	model = Forum
+	fields = ['title','desc']
+	template_name = 'forums/forum_update_form.html'
+
+
 
 class ForumCreate(CreateView):
 	model = Forum

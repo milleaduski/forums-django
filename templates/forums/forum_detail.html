@@ -6,9 +6,11 @@
 
 {% block content %}
 <div class="jumbotron">
-  <h1>{{object.title}}</h1> 
+  <h1>{{object.title}}</h1>
+  {% if request.user == object.user %}
+  <a href="{% url 'forum-edit' object.id %}">Edit</a>
+  {% endif  %}
   <p style="font-size: 20px;">{{ object.desc }}</p>
   - <span><i>{{object.created_at | naturaltime}}</i></span>
-  <p>{{additional}}</p>
 </div>
 {% endblock%}
