@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import CreateView, ListView, DetailView, UpdateView
+from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 from .models import Forum
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.http import HttpResponseForbidden
 
 @method_decorator(login_required, name='dispatch')
 
@@ -25,12 +26,24 @@ class ForumDetailView(DetailView):
 		context['additional'] = ''
 		return context
 
-class ForumUpdateView(UpdateView):
+class OwnerProtectMixin(object):
+	def dispatch(self, request, *args, **kwargs):
+		objectUser = self.get_object()
+		if objectUser.user != self.request.user:
+			return HttpResponseForbidden()
+		return super(OwnerProtectMixin, self).dispatch(request, *args, **kwargs)
+
+
+@method_decorator(login_required, name='dispatch')
+class ForumUpdateView(OwnerProtectMixin, UpdateView):
 	model = Forum
 	fields = ['title','desc']
 	template_name = 'forums/forum_update_form.html'
 
-
+@method_decorator(login_required, name='dispatch')
+class ForumDeleteView(OwnerProtectMixin, DeleteView):
+	model = Forum
+	success_url = '/forum'
 
 class ForumCreate(CreateView):
 	model = Forum

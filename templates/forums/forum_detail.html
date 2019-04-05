@@ -9,6 +9,9 @@
   <h1>{{object.title}}</h1>
   {% if request.user == object.user %}
   <a href="{% url 'forum-edit' object.id %}">Edit</a>
+  <form method="post" action="{% url 'forum-delete' object.id %}">
+  	{% csrf_token %} <input type="submit" value="Delete">
+  </form>
   {% endif  %}
   <p style="font-size: 20px;">{{ object.desc }}</p>
   - <span><i>{{object.created_at | naturaltime}}</i></span>
