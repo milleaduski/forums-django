@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
-from .models import Forum
+from .models import Forum, Comment
+from .forms import CommentForm
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -23,7 +24,7 @@ class ForumDetailView(DetailView):
 	model = Forum
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context['additional'] = ''
+		context['form_comment'] = CommentForm()
 		return context
 
 class OwnerProtectMixin(object):
@@ -51,4 +52,15 @@ class ForumCreate(CreateView):
 
 	def form_valid(self, form):
 		form.instance.user = self.request.user
+		return super().form_valid(form)
+
+class CommentCreateView(CreateView):
+	model = Comment
+	fields = ['desc']
+	template_name = 'forums/forums_detail.html'
+
+	def form_valid(self, form):
+		_forum = get_object_or_404(Forum, id=self.kwargs['pk'])
+		form.instance.user = self.request.user
+		form.instance.forum = _forum
 		return super().form_valid(form)

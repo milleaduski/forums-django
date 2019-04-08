@@ -15,5 +15,16 @@
   {% endif  %}
   <p style="font-size: 20px;">{{ object.desc }}</p>
   - <span><i>{{object.created_at | naturaltime}}</i></span>
+  <hr>
+	<!-- Display comment -->
+  {% for comment in object.comment_set.all %}
+  	<p>{{comment.desc}}</p>
+  {% endfor %}
+
+	<form method="post" action="{% url 'add-comment' object.id %}">
+	  	{% csrf_token %}
+	  	{{ form_comment }}
+	  	<input type="submit" name="Add Comment">
+	</form>
 </div>
 {% endblock%}
