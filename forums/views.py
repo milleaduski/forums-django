@@ -57,10 +57,15 @@ class ForumCreate(CreateView):
 class CommentCreateView(CreateView):
 	model = Comment
 	fields = ['desc']
-	template_name = 'forums/forums_detail.html'
 
 	def form_valid(self, form):
 		_forum = get_object_or_404(Forum, id=self.kwargs['pk'])
 		form.instance.user = self.request.user
 		form.instance.forum = _forum
 		return super().form_valid(form)
+
+@method_decorator(login_required, name='dispatch')
+class CommentUpdateView(OwnerProtectMixin, UpdateView):
+	model = Comment
+	fields = ['desc']
+	template_name = 'forums/forum_update_comment.html'

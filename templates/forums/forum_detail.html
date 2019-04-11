@@ -18,7 +18,13 @@
   <hr>
 	<!-- Display comment -->
   {% for comment in object.comment_set.all %}
-  	<p>{{comment.desc}}</p>
+  	<p>
+  		{{comment.desc}}
+	  	{% if request.user == comment.user %}
+	  		<a href="{% url 'edit-comment' comment.id %}">Edit</a>
+	  	{% endif %}
+		<!-- <br><span style="font-size: 12px;"><i>by {{comment.user}}</i></span> -->
+  	</p>
   {% endfor %}
 
 	<form method="post" action="{% url 'add-comment' object.id %}">
