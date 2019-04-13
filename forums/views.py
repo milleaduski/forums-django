@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.http import HttpResponseForbidden
+from django.contrib.messages.views import SuccessMessageMixin
 
 @method_decorator(login_required, name='dispatch')
 
@@ -42,11 +43,13 @@ class ForumUpdateView(OwnerProtectMixin, UpdateView):
 	template_name = 'forums/forum_update_form.html'
 
 @method_decorator(login_required, name='dispatch')
-class ForumDeleteView(OwnerProtectMixin, DeleteView):
+class ForumDeleteView(SuccessMessageMixin, OwnerProtectMixin, DeleteView):
 	model = Forum
 	success_url = '/forum'
+	success_message = 'Forum was successfully deleted'
 
-class ForumCreate(CreateView):
+@method_decorator(login_required, name='dispatch')
+class ForumCreate(SuccessMessageMixin, CreateView):
 	model = Forum
 	fields = ['title','desc']
 
@@ -57,6 +60,7 @@ class ForumCreate(CreateView):
 class CommentCreateView(CreateView):
 	model = Comment
 	fields = ['desc']
+	success_message = 'Forum was successfully created'
 
 	def form_valid(self, form):
 		_forum = get_object_or_404(Forum, id=self.kwargs['pk'])
@@ -69,3 +73,8 @@ class CommentUpdateView(OwnerProtectMixin, UpdateView):
 	model = Comment
 	fields = ['desc']
 	template_name = 'forums/forum_update_comment.html'
+
+@method_decorator(login_required, name='dispatch')
+class CommentDeleteView(OwnerProtectMixin, DeleteView):
+	model = Comment
+	success_url = '/forum'

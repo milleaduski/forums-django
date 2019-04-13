@@ -38,6 +38,14 @@
     </form>
   </div>
 </nav>
+    <!-- start display message -->
+ 	{% if messages %}
+ 	<div class="card bg-success text-white">
+    	{% for message in messages %}
+      		<div class="card-body">Forum was successfully created</div>
+      	{% endfor %}
+  	</div>
+    {% endif %}
     {% block content %}
     {% endblock %}
 </body>

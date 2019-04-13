@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import (ForumCreate, ForumListView, ForumUserListView, 
-				   ForumDetailView, ForumUpdateView, ForumDeleteView, CommentCreateView, CommentUpdateView)
+				   ForumDetailView, ForumUpdateView, ForumDeleteView,
+				   CommentCreateView, CommentUpdateView, CommentDeleteView)
 
 urlpatterns = [
 	path('', ForumListView.as_view(), name='forum-list'),
@@ -11,4 +12,5 @@ urlpatterns = [
 	path('by/<username>/', ForumUserListView.as_view(), name='forum-by'),
 	path('add-comment/<int:pk>', CommentCreateView.as_view(), name='add-comment'),
 	path('edit-comment/<int:pk>', CommentUpdateView.as_view(), name='edit-comment'),
+	path('delete-comment/<int:pk>', CommentDeleteView.as_view(), name='delete-comment'),
 ]

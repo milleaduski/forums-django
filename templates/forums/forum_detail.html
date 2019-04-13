@@ -22,8 +22,12 @@
   		{{comment.desc}}
 	  	{% if request.user == comment.user %}
 	  		<a href="{% url 'edit-comment' comment.id %}">Edit</a>
+	  		<form method="post" action="{% url 'delete-comment' comment.id %}">
+	  			{% csrf_token %}
+	  			<button class="btn btn-danger" type="submit">Delete</button>
+	  		</form>
 	  	{% endif %}
-		<!-- <br><span style="font-size: 12px;"><i>by {{comment.user}}</i></span> -->
+		<br><span style="font-size: 12px;"><i>by {{comment.user}}</i></span>
   	</p>
   {% endfor %}
 
@@ -33,4 +37,4 @@
 	  	<input type="submit" name="Add Comment">
 	</form>
 </div>
-{% endblock%}
+{% endblock %}

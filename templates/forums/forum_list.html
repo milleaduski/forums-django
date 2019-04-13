@@ -5,6 +5,13 @@
 {% block title %} List Forum{% endblock %}
 
 {% block content %}
+{% if messages %}
+<div class="card bg-danger text-white">
+	{% for message in messages %}
+		<div class="card-body">Forum was successfully created</div>
+	{% endfor %}
+</div>
+{% endif %}
 <div class="jumbotron">
   <h1>Forums</h1> 
  	<ul>
