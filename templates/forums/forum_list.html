@@ -19,5 +19,6 @@
  			<li><a href="{% url 'forum-detail' forum.slug %}"><b>{{forum.title}}</b></a> | <a href="{% url 'forum-by' forum.user %}">{{forum.user}}</a> | <span style="font-size: 12px;"><i>{{forum.created_at | naturaltime}}</i></span></li><br>
  		{% endfor %}
  	</ul>
+ 	{% include 'snippets/pagination.html' %}
 </div>
 {% endblock%}

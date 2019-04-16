@@ -15,10 +15,7 @@ class Forum(models.Model):
 	def save(self, *args, **kwargs):
 		if self.pk is None:
 			self.slug = slugify(self.title) + '-' + time.strftime("%Y%m%d%H%M%S")
-			super(Forum, self).save(*args, **kwargs)
-	
-	def get_absolute_url(self):
-		return reverse('home')
+		super(Forum, self).save(*args, **kwargs)
 
 	def __str__(self):
 		return self.title

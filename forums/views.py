@@ -7,13 +7,13 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.http import HttpResponseForbidden
 from django.contrib.messages.views import SuccessMessageMixin
+from django.urls import reverse_lazy
 
 @method_decorator(login_required, name='dispatch')
-
 class ForumListView(ListView):
 	model = Forum
-	#context_object_name  = "objForums"
 	queryset = Forum.objects.order_by('-created_at')
+	paginate_by = 2
 
 class ForumUserListView(ListView):
 	template_name = 'forums/forum_by_user.html'
@@ -41,6 +41,10 @@ class ForumUpdateView(OwnerProtectMixin, UpdateView):
 	model = Forum
 	fields = ['title','desc']
 	template_name = 'forums/forum_update_form.html'
+
+	def get_success_url(self, **kwargs):
+		return reverse_lazy('forum-detail', kwargs={'slug' : self.object.slug})
+
 
 @method_decorator(login_required, name='dispatch')
 class ForumDeleteView(SuccessMessageMixin, OwnerProtectMixin, DeleteView):
