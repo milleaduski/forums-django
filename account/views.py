@@ -4,11 +4,13 @@ from django.contrib.auth import update_session_auth_hash
 from django.urls import reverse, reverse_lazy
 from django.views import generic
 from django.contrib import messages
+from .forms import SignUpForm
 
-class SignUp(generic.CreateView):
-	form_class = UserCreationForm
-	success_url = reverse_lazy('login')
-	template_name = 'signup.html'
+def SignUp(request):
+	# success_url = reverse_lazy('login')
+	# template_name = 'signup.html'
+	formClass = SignUpForm
+	return render(request, 'signup.html', {'signupForm' : formClass})
 
 def ChangePassword(request):
 	if request.method == 'POST':

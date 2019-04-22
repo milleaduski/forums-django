@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.utils.text import slugify
 from django.urls import reverse
-
+from django.contrib.auth.models import User
 import time
 
 class Forum(models.Model):
@@ -28,3 +28,11 @@ class Comment(models.Model):
 
 	def get_absolute_url(self):
 		return reverse('forum-list')
+
+class Profile(models.Model):
+	user 	= models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
+	activation_key 	= models.CharField(max_length=255, default=1)
+	email_validated = models.BooleanField(default=False)
+
+	def __str__(self):
+		return self.user.username
