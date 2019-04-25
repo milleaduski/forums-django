@@ -30,7 +30,7 @@ class Comment(models.Model):
 		return reverse('forum-list')
 
 class Profile(models.Model):
-	user 	= models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
+	user 	= models.OneToOneField(User, on_delete=models.CASCADE)
 	activation_key 	= models.CharField(max_length=255, default=1)
 	email_validated = models.BooleanField(default=False)
 

@@ -5,12 +5,31 @@ from django.urls import reverse, reverse_lazy
 from django.views import generic
 from django.contrib import messages
 from .forms import SignUpForm
+from .token import account_activation_token
+
+from django.contrib.sites.shortcuts import get_current_site
 
 def SignUp(request):
-	# success_url = reverse_lazy('login')
-	# template_name = 'signup.html'
-	formClass = SignUpForm
-	return render(request, 'signup.html', {'signupForm' : formClass})
+	if request.method == 'POST':
+		form = SignUpForm(request.POST)
+		if form.is_valid():
+			user  = form.save()
+			user.is_active = False
+			user.save()
+			token = account_activation_token.make_token(user)
+			# Send email
+			subject = "Activate your account from email"
+
+			message = render_to_string('activation_email.html',
+				'user' : user,
+				'domain' : get_current_site(request).domain,
+				'uid' : urlsafe_base64_encode(force_byte(user.pk)),
+				'token' : token
+			)
+			user.email_user(subject, message)
+	else:
+		formClass = SignUpForm()
+		return render(request, 'signup.html', {'signupForm' : formClass})
 
 def ChangePassword(request):
 	if request.method == 'POST':
