@@ -3,6 +3,9 @@ from .views import (ForumCreate, ForumListView, ForumUserListView,
 				   ForumDetailView, ForumUpdateView, ForumDeleteView,
 				   CommentCreateView, CommentUpdateView, CommentDeleteView)
 
+## Namespace
+app_name = 'forums-path'
+
 urlpatterns = [
 	path('', ForumListView.as_view(), name='forum-list'),
 	path('add/', ForumCreate.as_view(), name='forum-add'),

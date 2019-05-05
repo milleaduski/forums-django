@@ -37,16 +37,16 @@ def SignUp(request):
 
 	return render(request, 'signup.html', {'signupForm' : form})
 
-def ChangePassword(request):
-	if request.method == 'POST':
-		form = PasswordChangeForm(request.user, request.POST)
-		if form.is_valid():
-			user = form.save()
-			update_session_auth_hash(request, user)
-			return redirect(reverse('home'))
-	else:
-		form = PasswordChangeForm(request.user)
-	return render(request, 'change_password.html', {'form' : form})
+# def ChangePassword(request):
+# 	if request.method == 'POST':
+# 		form = PasswordChangeForm(request.user, request.POST)
+# 		if form.is_valid():
+# 			user = form.save()
+# 			update_session_auth_hash(request, user)
+# 			return redirect(reverse('home'))
+# 	else:
+# 		form = PasswordChangeForm(request.user)
+# 	return render(request, 'change_password.html', {'form' : form})
 ## OLD password: newadmin1994
 ## New password: admin1994
 
